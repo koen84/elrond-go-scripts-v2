@@ -33,7 +33,7 @@ case "$1" in
   deploy_to_host
   for HOST in $(cat target_ips) 
     do
-    ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/community-scripts-v2 && ./script.sh install"
+    ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh install"
     done 
   ;;
 
@@ -65,7 +65,7 @@ case "$1" in
   deploy_to_host
   for HOST in $(cat target_ips) 
     do
-    ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/community-scripts-v2 && ./script.sh upgrade"
+    ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh upgrade"
     done 
   ;;
 
