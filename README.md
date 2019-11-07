@@ -17,14 +17,14 @@ target_ips - add all of your remote machines ips here with newline after each on
 ## Script functions
 
 * First time install:
-./script.sh install --> single node local machine install
-./script.sh install_hosts --> install node on multiple hosts (using target_ips file)
+ - ./script.sh install --> single node local machine install
+ - ./script.sh install_hosts --> install node on multiple hosts (using target_ips file)
 
 * Update/upgrade node:
-./script.sh upgrade --> upgrade a single local node 
-./script.sh upgrade_hosts --> upgrade node on all hosts (using target_ips file)
+ - ./script.sh upgrade --> upgrade a single local node 
+ - ./script.sh upgrade_hosts --> upgrade node on all hosts (using target_ips file)
 
 * Start nodes:
-sudo systemctl start elrond-node.service --> Start your local node
-./script.sh start_hosts --> start node process on all hosts (using target_ips file)
+ - sudo systemctl start elrond-node.service --> Start your local node
+ - ./script.sh start_hosts --> start node process on all hosts (using target_ips file)
 
