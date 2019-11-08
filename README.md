@@ -14,17 +14,28 @@ PEM="~/.ssh/id_rsa"
 ```
 target_ips - add all of your remote machines ips here with newline after each one
 
+* Optional things to add:
+You can provide your own node keys at the install stage by placing the in this path:
+```
+<HOME-FOLDER-PATH>/PEMS/node-0/
+<HOME-FOLDER-PATH>/PEMS/node-1/
+.
+.
+.
+<HOME-FOLDER-PATH>/PEMS/node-x/
+```
+
 ## Script functions
 
 #### First time install:
- - ./script.sh install --> single node local machine install
- - ./script.sh install_hosts --> install node on multiple hosts (using target_ips file)
+ - ./script.sh install --> single or multiple nodes local machine install
+ - ./script.sh install_hosts --> install nodes on multiple hosts (using target_ips file)
 
 #### Update/upgrade node:
- - ./script.sh upgrade --> upgrade a single local node 
- - ./script.sh upgrade_hosts --> upgrade node on all hosts (using target_ips file)
+ - ./script.sh upgrade --> upgrade a single or multiple local nodes 
+ - ./script.sh upgrade_hosts --> upgrade nodes on all hosts (using target_ips file)
 
 #### Start nodes:
- - sudo systemctl start elrond-node.service --> Start your local node
- - ./script.sh start_hosts --> start node process on all hosts (using target_ips file)
+ - ./script.sh start --> Start your local node or nodes
+ - ./script.sh start_hosts --> start node processes on all hosts (using target_ips file)
 
