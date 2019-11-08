@@ -53,6 +53,13 @@ case "$1" in
   deploy_to_host
   for HOST in $(cat target_ips) 
     do
+      echo -e
+      echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
+      echo -e 
+      echo -e "${GREEN}---> Running the install process on the ${CYAN}$HOST${GREEN}...${NC}"
+      echo -e
+      echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
+      echo -e
     ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh install"
     done 
   ;;
@@ -95,7 +102,14 @@ case "$1" in
   deploy_to_host
   for HOST in $(cat target_ips) 
     do
-    ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh upgrade"
+      echo -e
+      echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
+      echo -e 
+      echo -e "${GREEN}---> Running the upgrade process on the ${CYAN}$HOST${GREEN}...${NC}"
+      echo -e
+      echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
+      echo -e
+      ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh upgrade"
     done 
   ;;
 
@@ -107,7 +121,7 @@ case "$1" in
         echo -e
         echo -e "${GREEN}Starting Elrond Node-$STARTINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
         echo -e
-        sudo systemctl start elrond-node-$STARTINDEX
+        sudo systemctl start elrond-node-$STARTINDEX && sudo systemctl status elrond-node-$STARTINDEX
       done
   ;;
 
