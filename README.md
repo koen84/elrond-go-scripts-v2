@@ -2,20 +2,20 @@
 
 ## Preliminary instructions
 
-* Scripts Structure:
-variables.cfg - location for custom local & remote system variables 
-functions.cfg - all functions used in main script body are placed here
-script.sh - main script
+#### Scripts Structure:
+- variables.cfg - location for custom local & remote system variables 
+- functions.cfg - all functions used in main script body are placed here
+- script.sh - main script
 
-* Mandatory things to add:
-.identity - specify PEM (for remote machines) location here:
+#### Mandatory things to add:
+- target_ips - add all of your remote machines ips here with newline after each one
+- .identity - specify PEM (for remote machines) location here:
 ```
 PEM="~/.ssh/id_rsa"
 ```
-target_ips - add all of your remote machines ips here with newline after each one
 
-* Optional things to add:
-You can provide your own node keys at the install stage by placing the in this path:
+#### Optional things to add:
+- You can provide your own node keys at the install stage by placing the in this path:
 ```
 <HOME-FOLDER-PATH>/PEMS/node-0/
 <HOME-FOLDER-PATH>/PEMS/node-1/
