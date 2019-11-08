@@ -15,7 +15,17 @@ source functions.cfg
 case "$1" in
 
 'install')
+  read -p "How many nodes do you want to run ? : " NUMBEROFNODES
+  if [ $NUMBEROFNODES = "" ]
+  then
+      NUMBEROFNODES = 1
+  fi
+  
   prerequisites
+  
+  #Keep track of how many nodes you've started on the machine
+  echo $NUMBEROFNODES | sudo tee -a /opt/node/.numberofnodes
+  
   paths
   go_lang
   #If repos are present and you run install again this will clean up for you :D
@@ -23,10 +33,20 @@ case "$1" in
   mkdir -p $GOPATH/src/github.com/ElrondNetwork
   git_clone
   build_node
-  install
-  node_name
-  keys
-  systemd
+  build_keygen
+  
+  #Run the install process for each node
+  for i in $(seq 1 $NUMBEROFNODES); 
+        do 
+         INDEX=$(( $i - 1 ))
+         WORKDIR="/opt/node/node-$INDEX"
+         
+         install
+         node_name
+         keys
+         systemd
+       done
+
   ;;
 
 'install_hosts')
@@ -42,23 +62,33 @@ case "$1" in
   #Remove previously cloned repos  
   if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; echo -e; echo -e "${RED}--> Repos present. Removing and fetching again...${NC}"; echo -e; fi
   #Backup prefs.toml which has node name
-  sudo cp /opt/node/config/prefs.toml /opt/node/config/prefs.toml.save
   git_clone
   build_node
-  read -p "Do you want to remove the current Node DB & Logs ? (yes/no): " CLEAN
-  if [ "$CLEAN" != "no" ]
-                then
-                  sudo systemctl stop elrond-node
-                  cleanup
-                  update
-                  sudo mv /opt/node/config/prefs.toml.save /opt/node/config/prefs.toml && sudo chown node:node /opt/node/config/prefs.toml
-                  sudo systemctl start elrond-node
-          else
-            sudo systemctl stop elrond-node
-            update
-            sudo mv /opt/node/config/prefs.toml.save /opt/node/config/prefs.toml && sudo chown node:node /opt/node/config/prefs.toml
-            sudo systemctl start elrond-node
-  fi
+  
+  INSTALLEDNODES=$(cat /opt/node/.numberofnodes)
+  
+  #Run the update process for each node
+  for i in $(seq 1 $INSTALLEDNODES);
+      do
+        UPDATEINDEX=$(( $i - 1 ))
+        UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
+        sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
+  
+        read -p "Do you want to remove the current Node DB & Logs for node-$UPDATEINDEX ? (yes/no): " CLEAN
+        if [ "$CLEAN" != "no" ]
+                  then
+                    sudo systemctl stop elrond-node-$UPDATEINDEX
+                    cleanup
+                    update
+                    sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+                    sudo systemctl start elrond-node-$UPDATEINDEX
+                  else
+                    sudo systemctl stop elrond-node-$UPDATEINDEX
+                    update
+                    sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+                    sudo systemctl start elrond-node-$UPDATEINDEX
+            fi
+      done
   ;;
 
 'upgrade_hosts')
@@ -69,18 +99,30 @@ case "$1" in
     done 
   ;;
 
+'start')
+  NODESTOSTART=$(cat /opt/node/.numberofnodes)
+  for i in $(seq 1 $NODESTOSTART);
+      do
+        STARTINDEX=$(( $i - 1 ))
+        echo -e
+        echo -e "${GREEN}Starting Elrond Node-$STARTINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
+        echo -e
+        sudo systemctl start elrond-node-$STARTINDEX
+      done
+  ;;
+
 'start_hosts')
   
   for HOST in $(cat target_ips) 
     do
     echo -e
-    echo -e "${GREEN}Starting Elrond Node bunary on host ${CYAN}$HOST${GREEN}...${NC}"
+    echo -e "${GREEN}Starting Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
     echo -e
-    ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "sudo systemctl start elrond-node.service && sudo systemctl status elrond-node.service"
+    ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh start"
     done 
   ;;
 
 *)
-  echo "Usage: Missing parameter ! [install|install_hosts|upgrade|upgrade_hosts|start_hosts]"
+  echo "Usage: Missing parameter ! [install|install_hosts|upgrade|upgrade_hosts|start|start_hosts]"
   ;;
 esac
