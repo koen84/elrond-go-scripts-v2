@@ -56,7 +56,7 @@ case "$1" in
       echo -e
       echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
       echo -e 
-      echo -e "${GREEN}---> Running the install process on the ${CYAN}$HOST${GREEN}...${NC}"
+      echo -e "${GREEN}---> Running the install process on the ${CYAN}$HOST${GREEN} machine ...${NC}"
       echo -e
       echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
       echo -e
@@ -105,7 +105,7 @@ case "$1" in
       echo -e
       echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
       echo -e 
-      echo -e "${GREEN}---> Running the upgrade process on the ${CYAN}$HOST${GREEN}...${NC}"
+      echo -e "${GREEN}---> Running the upgrade process on the ${CYAN}$HOST${GREEN} machine ...${NC}"
       echo -e
       echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
       echo -e
