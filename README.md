@@ -16,7 +16,7 @@ PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
 ```
 
 #### Optional things to add:
-- You can provide your own node keys at the install stage by placing the in this path:
+- You can provide your own node keys at the install stage by placing them in this path:
 ```
 <HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-0/
 <HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-1/
