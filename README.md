@@ -8,17 +8,18 @@
 - script.sh - main script
 
 #### Mandatory things to add:
+- variables.cfg - here you must specify home folder path and user name for the remote machines
 - target_ips - add all of your remote machines ips here with newline after each one
 - .identity - specify PEM (for remote machines) location here:
 ```
-PEM="~/.ssh/id_rsa"
+PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
 ```
 
 #### Optional things to add:
 - You can provide your own node keys at the install stage by placing the in this path:
 ```
-<HOME-FOLDER-PATH>/PEMS/node-0/
-<HOME-FOLDER-PATH>/PEMS/node-1/
+<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-0/
+<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-1/
 .
 .
 .
