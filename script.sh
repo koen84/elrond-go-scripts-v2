@@ -47,6 +47,22 @@ case "$1" in
          systemd
        done
 
+  echo -e 
+  read -p "Do you want to install the auto-update function (Default No) ? (Yy/Nn)" yn
+  echo -e
+  case $yn in
+       [Yy]* )
+          echo -e "${GREEN}Adding auto-update to crontab !${NC}"
+          autoupdate  
+            ;;
+       [Nn]* )
+          echo -e "${GREEN}Fine... let's continue...${NC}"
+            ;;
+           * )
+           echo -e "${GREEN}I'll take that as a no then...${NC}"
+            ;;
+      esac
+
   ;;
 
 'install_hosts')
