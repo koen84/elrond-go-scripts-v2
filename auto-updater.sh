@@ -7,10 +7,10 @@ CYAN='\x1B[0;36m'
 GREEN='\x1B[0;32m'
 NC='\x1B[0m'
 
-source .identity
-source functions.cfg
+#Handle some paths
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$PATH
 
-paths
 LATEST=$(curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
 if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; 
@@ -23,15 +23,17 @@ if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ];
             echo -e
     fi
 
-echo -e
-echo "Your current tag is:  $CLONEDTAG"
-echo "Latest tag on github: $LATEST"
-echo -e
+echo `date` >> $HOME/autoupdate.status
+echo "Your current tag is:  $CLONEDTAG" >> $HOME/autoupdate.status
+echo "Latest tag on github: $LATEST" >> $HOME/autoupdate.status
 
 
 if [ "$CLONEDTAG" != "$LATEST" ]; 
-                          then 
-                            echo "Triggering automated upgrade !"
+                          then
+                            echo "Triggering automated upgrade !" >> $HOME/autoupdate.status
+                            echo " " >> $HOME/autoupdate.status
+                            cd $HOME/elrond-go-scripts-v2/ && bash script.sh auto_upgrade
                       else
-                        echo "Nothing to do here... you are on the latest tag !"
+                        echo "Nothing to do here... you are on the latest tag !" >> $HOME/autoupdate.status
+                        echo " " >> $HOME/autoupdate.status
     fi

@@ -98,6 +98,28 @@ case "$1" in
       done
   ;;
 
+'auto_upgrade')
+  paths
+  #Remove previously cloned repos  
+  if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi
+  git_clone
+  build_node
+  
+  INSTALLEDNODES=$(cat /opt/node/.numberofnodes)
+  
+  #Run the update process for each node
+  for i in $(seq 1 $INSTALLEDNODES);
+      do
+        UPDATEINDEX=$(( $i - 1 ))
+        UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
+        sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
+        sudo systemctl stop elrond-node-$UPDATEINDEX
+        update
+        sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+        sudo systemctl start elrond-node-$UPDATEINDEX
+      done
+  ;;
+
 'upgrade_hosts')
   deploy_to_host
   for HOST in $(cat target_ips) 
@@ -134,6 +156,10 @@ case "$1" in
     echo -e
     ssh -t -o StrictHostKeyChecking=no -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh start"
     done 
+  ;;
+
+'deploy')
+  deploy_to_host
   ;;
 
 *)
