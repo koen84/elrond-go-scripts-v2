@@ -18,9 +18,7 @@ if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ];
                     cd $GOPATH/src/github.com/ElrondNetwork/elrond-go/
                     CLONEDTAG=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
           else
-            echo -e
-            echo -e "${RED}--> elrond-go repo not found in path...${NC}"
-            echo -e
+            echo "--> elrond-go repo not found in path..." >> $HOME/autoupdate.status
     fi
 
 echo `date` >> $HOME/autoupdate.status
