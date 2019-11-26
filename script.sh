@@ -76,7 +76,7 @@ case "$1" in
       echo -e
       echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
       echo -e
-    ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh install"
+    ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh install"
     done 
   ;;
 
@@ -147,7 +147,7 @@ case "$1" in
       echo -e
       echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
       echo -e
-      ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh upgrade"
+      ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh upgrade"
     done 
   ;;
 
@@ -170,7 +170,7 @@ case "$1" in
     echo -e
     echo -e "${GREEN}Starting Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
     echo -e
-    ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $REMOTE_USER@$HOST "cd $REMOTE_HOME/$DIRECTORY_NAME && ./script.sh start"
+    ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh start"
     done 
   ;;
 
