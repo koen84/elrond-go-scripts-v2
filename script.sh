@@ -7,9 +7,9 @@ CYAN='\x1B[0;36m'
 GREEN='\x1B[0;32m'
 NC='\x1B[0m'
 
-source .identity
-source variables.cfg
-source functions.cfg
+source configs/.identity
+source configs/variables.cfg
+source configs/functions.cfg
 
 
 case "$1" in
@@ -174,11 +174,34 @@ case "$1" in
     done 
   ;;
 
+'stop')
+  NODESTOSTOP=$(cat /opt/node/.numberofnodes)
+  for i in $(seq 1 $NODESTOSTOP);
+      do
+        STOPINDEX=$(( $i - 1 ))
+        echo -e
+        echo -e "${GREEN}Starting Elrond Node-$STOPINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
+        echo -e
+        sudo systemctl start elrond-node-$STOPINDEX && sudo systemctl status elrond-node-$STOPINDEX
+      done
+  ;;
+
+'stop_hosts')
+  
+  for HOST in $(cat target_ips) 
+    do
+    echo -e
+    echo -e "${GREEN}Starting Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
+    echo -e
+    ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh stop"
+    done 
+  ;;
+
 'deploy')
   deploy_to_host
   ;;
 
 *)
-  echo "Usage: Missing parameter ! [install|install_hosts|upgrade|upgrade_hosts|start|start_hosts]"
+  echo "Usage: Missing parameter ! [install|install_hosts|upgrade|upgrade_hosts|start|start_hosts|stop|stop_hosts]"
   ;;
 esac
