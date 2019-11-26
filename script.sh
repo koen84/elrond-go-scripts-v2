@@ -182,7 +182,7 @@ case "$1" in
         echo -e
         echo -e "${GREEN}Stopping Elrond Node-$STOPINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
         echo -e
-        sudo systemctl start elrond-node-$STOPINDEX
+        sudo systemctl stop elrond-node-$STOPINDEX
       done
   ;;
 
