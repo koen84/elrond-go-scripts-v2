@@ -180,9 +180,9 @@ case "$1" in
       do
         STOPINDEX=$(( $i - 1 ))
         echo -e
-        echo -e "${GREEN}Starting Elrond Node-$STOPINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
+        echo -e "${GREEN}Stopping Elrond Node-$STOPINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
         echo -e
-        sudo systemctl start elrond-node-$STOPINDEX && sudo systemctl status elrond-node-$STOPINDEX
+        sudo systemctl start elrond-node-$STOPINDEX
       done
   ;;
 
@@ -191,7 +191,7 @@ case "$1" in
   for HOST in $(cat target_ips) 
     do
     echo -e
-    echo -e "${GREEN}Starting Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
+    echo -e "${GREEN}Stopping Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
     echo -e
     ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh stop"
     done 
