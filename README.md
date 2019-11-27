@@ -1,30 +1,35 @@
 # Elrond Node deploy scripts V2
 
 ## Preliminary instructions
+- This scripts package requires that the user they are run under has the ability to run sudo commands.
 
 #### Scripts Structure:
-- variables.cfg - location for custom local & remote system variables 
-- functions.cfg - all functions used in main script body are placed here
+- configs/variables.cfg - location for custom local & remote system variables 
+- configs/functions.cfg - all functions used in main script body are placed here
 - script.sh - main script
 
 #### Mandatory things to add:
-- variables.cfg - here you must specify home folder path and user name for the remote machines
-- target_ips - add all of your remote machines ips here with newline after each one
-- .identity - specify PEM (for remote machines) location here:
+- variables.cfg - here you must specify the home folder path and user name for the remote machines
+- target_ips - create this file inside the scripts folder abd add all of your remote machines ips inside (with newline after each one)
+- .identity - create this file inside the scripts configs folder and add your PEM (ssh keys) name and path using this format:
 ```
 PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
 ```
 
-#### Optional things to add:
-- You can provide your own node keys at the install stage by placing them in this path:
+#### Validator Keys Management:
+- If you have custom validator keys for your nodes the script looks for them in the "<HOME-FOLDER-PATH>/VALIDATOR_KEYS/" folder on each machine
+- The install script expects the keys in zip format follwing this naming pattern:
+
 ```
-<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-0/
-<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-1/
+<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-0.zip
+<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-1.zip
 .
 .
 .
-<HOME-FOLDER-PATH>/PEMS/node-x/
+<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-x.zip
 ```
+
+- If there are not enough keys for all nodes on a specific machine new keys will be automatically generated (but those nodes will only be observers)
 
 ## Script functions
 
