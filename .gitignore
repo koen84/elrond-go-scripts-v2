@@ -1,4 +1,3 @@
 #Don't track files:
 .DS_Store
-.identity
 target_ips
