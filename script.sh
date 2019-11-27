@@ -22,6 +22,7 @@ case "$1" in
   fi
   
   prerequisites
+  replicant
   
   #Keep track of how many nodes you've started on the machine
   echo $NUMBEROFNODES | sudo tee -a /opt/node/.numberofnodes
