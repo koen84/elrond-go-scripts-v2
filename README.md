@@ -29,7 +29,7 @@ PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
 
 #### Validator Keys Management:
 - If you have custom validator keys for your nodes the script looks for them in the "<HOME-FOLDER-PATH>/VALIDATOR_KEYS/" folder on each machine
-- The install script expects the keys in zip format follwing this naming pattern:
+- The install script expects the keys in zip format follwing this naming pattern (from node 0 to x on each machine/instance):
 
 ```
 <HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-0.zip
