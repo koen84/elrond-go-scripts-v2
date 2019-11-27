@@ -13,6 +13,14 @@
 
 #### Mandatory things to add:
 - variables.cfg - here you must specify the home folder path and user name for the remote machines and you have the option to use a custom port for ssh
+
+```
+CUSTOM_HOME="/home/ubuntu"
+CUSTOM_USER="ubuntu"
+NODE_KEYS_LOCATION="$CUSTOM_HOME/VALIDATOR_KEYS"
+SSHPORT="22"
+```
+
 - target_ips - create this file inside the scripts folder abd add all of your remote machines ips inside (with newline after each one)
 - .identity - create this file inside the scripts configs folder and add your PEM (ssh keys) name and path using this format:
 ```
@@ -45,9 +53,9 @@ PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
  - ./script.sh upgrade_hosts --> upgrade nodes on all hosts (using target_ips file)
 
 #### Start nodes:
- - ./script.sh start --> Start your local node or nodes
+ - ./script.sh start --> start your local node or nodes
  - ./script.sh start_hosts --> start node processes on all hosts (using target_ips file)
  
 #### Stop nodes:
- - ./script.sh stop --> Stops your local node or nodes
+ - ./script.sh stop --> stops your local node or nodes
  - ./script.sh stop_hosts --> stops node processes on all hosts (using target_ips file)
