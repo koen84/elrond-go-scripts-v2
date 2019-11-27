@@ -5,6 +5,7 @@
 - It relies on SSH (using key pairs) and on RSYNC through SSH
 - The nodes will run in the backround as separate systemd units.
 - This scripts package requires that the user they are run under has the ability to run sudo commands.
+- All of your remote hosts should pe accesible through ssh and use key pairs for connection
 
 #### Scripts Structure:
 - configs/variables.cfg - location for custom local & remote system variables 
@@ -21,8 +22,8 @@ NODE_KEYS_LOCATION="$CUSTOM_HOME/VALIDATOR_KEYS"
 SSHPORT="22"
 ```
 
-- target_ips - create this file inside the scripts folder abd add all of your remote machines ips inside (with newline after each one)
-- .identity - create this file inside the scripts configs folder and add your PEM (ssh keys) name and path using this format:
+- target_ips - you must create this file inside the scripts folder. Add all of your remote machines ips inside (with newline after each one)
+- .identity - you must create this file inside the scripts configs folder and add your PEM (ssh keys) name and path using this format:
 ```
 PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
 ```

@@ -20,7 +20,7 @@ echo "Your current tag is:  $CLONEDTAG" >> $HOME/autoupdate.status
 
 
 if [ -z "$LATEST" ]; then
-                      echo "Couldn't get the latest tag from Github !!! " >> $HOME/autoupdate.status
+                      echo "Couldn't get the latest tag from Github !!! Aborting..." >> $HOME/autoupdate.status
                       echo " " >> $HOME/autoupdate.status
                         else 
               if [ "$CLONEDTAG" != "$LATEST" ]; then
