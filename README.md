@@ -1,6 +1,9 @@
 # Elrond Node deploy scripts V2
 
 ## Preliminary instructions
+- The current version of scripts allow you to run multiple nodes locally or multiple nodes on multiple remote machines.
+- It relies on SSH (using key pairs) and on RSYNC through SSH
+- The nodes will run in the backround as separate systemd units.
 - This scripts package requires that the user they are run under has the ability to run sudo commands.
 
 #### Scripts Structure:
@@ -9,7 +12,7 @@
 - script.sh - main script
 
 #### Mandatory things to add:
-- variables.cfg - here you must specify the home folder path and user name for the remote machines
+- variables.cfg - here you must specify the home folder path and user name for the remote machines and you have the option to use a custom port for ssh
 - target_ips - create this file inside the scripts folder abd add all of your remote machines ips inside (with newline after each one)
 - .identity - create this file inside the scripts configs folder and add your PEM (ssh keys) name and path using this format:
 ```
@@ -44,4 +47,7 @@ PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
 #### Start nodes:
  - ./script.sh start --> Start your local node or nodes
  - ./script.sh start_hosts --> start node processes on all hosts (using target_ips file)
-
+ 
+#### Start nodes:
+ - ./script.sh stop --> Start your local node or nodes
+ - ./script.sh stop_hosts --> start node processes on all hosts (using target_ips file)
