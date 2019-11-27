@@ -48,6 +48,6 @@ PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
  - ./script.sh start --> Start your local node or nodes
  - ./script.sh start_hosts --> start node processes on all hosts (using target_ips file)
  
-#### Start nodes:
- - ./script.sh stop --> Start your local node or nodes
- - ./script.sh stop_hosts --> start node processes on all hosts (using target_ips file)
+#### Stop nodes:
+ - ./script.sh stop --> Stops your local node or nodes
+ - ./script.sh stop_hosts --> stops node processes on all hosts (using target_ips file)
