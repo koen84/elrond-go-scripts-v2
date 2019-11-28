@@ -214,6 +214,48 @@ case "$1" in
     done 
   ;;
 
+'cleanup')
+  echo -e 
+  read -p "Do you want to delete installed nodes (Default No) ? (Yy/Nn)" yn
+  echo -e
+  case $yn in
+       [Yy]* )
+          echo -e "${RED}OK ! Cleaning everything !${NC}"
+          
+          NODESTODESTROY=$(cat /opt/node/.numberofnodes)
+              for i in $(seq 1 $NODESTODESTROY);
+                  do
+                      KILLINDEX=$(( $i - 1 ))
+                        echo -e
+                        echo -e "${GREEN}Stopping Elrond Node-$KILLINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
+                        echo -e
+                        sudo systemctl stop elrond-node-$KILLINDEX
+                        echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
+                        echo -e
+                        sudo rm /etc/systemd/system/elrond-node-$KILLINDEX
+                        sudo rm -rf /opt/node/node-$KILLINDEX
+                        
+                  done
+            
+            echo -e "${GREEN}Removing auto-updater crontab from host ${CYAN}$HOST${GREEN}...${NC}"
+            echo -e      
+            crontab -l | grep -v 'elrond-go-scripts-v2/auto-updater.sh'  | crontab -
+            
+            echo -e "${GREEN}Removing cloned elrond-go & elrond-configs repo from host ${CYAN}$HOST${GREEN}...${NC}"
+            echo -e      
+            if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi      
+            ;;
+            
+       [Nn]* )
+          echo -e "${GREEN}Fine ! Skipping cleanup on this machine...${NC}"
+            ;;
+            
+           * )
+           echo -e "${GREEN}I'll take that as a no then... moving on...${NC}"
+            ;;
+      esac
+  ;;
+
 'deploy')
   deploy_to_host
   ;;
