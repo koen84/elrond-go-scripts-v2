@@ -232,7 +232,7 @@ case "$1" in
                         sudo systemctl stop elrond-node-$KILLINDEX
                         echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
                         echo -e
-                        sudo rm /etc/systemd/system/elrond-node-$KILLINDEX
+                        sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
                         sudo rm -rf /opt/node/node-$KILLINDEX
                         
                   done
