@@ -138,7 +138,8 @@ if [ "$DBQUERY" -eq "1" ]; then
         UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
         sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
         sudo systemctl stop elrond-node-$UPDATEINDEX
-        echo "Database Cleanup Called ! Erasing... " >> $HOME/autoupdate.status        
+        echo "Database Cleanup Called ! Erasing... " >> $HOME/autoupdate.status
+        echo " " >> $HOME/autoupdate.status
         cleanup
         update
         sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
@@ -153,6 +154,7 @@ if [ "$DBQUERY" -eq "1" ]; then
             sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
             sudo systemctl stop elrond-node-$UPDATEINDEX
             echo "Database Cleanup Not Needed ! Moving to next step... " >> $HOME/autoupdate.status
+            echo " " >> $HOME/autoupdate.status
             update
             sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
             sudo systemctl start elrond-node-$UPDATEINDEX
@@ -283,6 +285,6 @@ if [ "$DBQUERY" -eq "1" ]; then
   ;;
 
 *)
-  echo "Usage: Missing parameter ! [install|install_hosts|upgrade|upgrade_hosts|start|start_hosts|stop|stop_hosts]"
+  echo "Usage: Missing parameter ! [install|install_hosts|upgrade|upgrade_hosts|start|start_hosts|stop|stop_hosts|cleanup|cleanup_hosts]"
   ;;
 esac
