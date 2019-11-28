@@ -124,33 +124,36 @@ case "$1" in
   
   DBQUERY=$(curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | jq -r .body | grep '*This release should start with a new DB*' -c)
   
-  INSTALLEDNODES=$(cat /opt/node/.numberofnodes)
-  
-  #Run the update process for each node
+  INSTALLEDNODES=$(cat /opt/node/.numberofnodes)  
+
+if [ "$DBQUERY" -eq "1" ]; then
+
   for i in $(seq 1 $INSTALLEDNODES);
       do
         UPDATEINDEX=$(( $i - 1 ))
         UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
         sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
-        
-        if [ "$DBQUERY" -eq "1" ]; then
-                        sudo systemctl stop elrond-node-$UPDATEINDEX
-                        echo "Database Cleanup Called ! Erasing... " >> $HOME/autoupdate.status        
-                        cleanup
-                        update
-                        sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
-                        sudo systemctl start elrond-node-$UPDATEINDEX
-        
-        
-                      else
-                        sudo systemctl stop elrond-node-$UPDATEINDEX
-                        echo "Database Cleanup Not Needed ! Moving to next step... " >> $HOME/autoupdate.status
-                        update
-                        sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
-                        sudo systemctl start elrond-node-$UPDATEINDEX
-        
-                      fi
+        sudo systemctl stop elrond-node-$UPDATEINDEX
+        echo "Database Cleanup Called ! Erasing... " >> $HOME/autoupdate.status        
+        cleanup
+        update
+        sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+        sudo systemctl start elrond-node-$UPDATEINDEX        
       done
+      
+    else
+      for i in $(seq 1 $INSTALLEDNODES);
+          do
+            UPDATEINDEX=$(( $i - 1 ))
+            UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
+            sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
+            sudo systemctl stop elrond-node-$UPDATEINDEX
+            echo "Database Cleanup Not Needed ! Moving to next step... " >> $HOME/autoupdate.status
+            update
+            sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+            sudo systemctl start elrond-node-$UPDATEINDEX
+          done
+    fi
   ;;
 
 'upgrade_hosts')
