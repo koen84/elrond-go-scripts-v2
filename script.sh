@@ -240,7 +240,7 @@ case "$1" in
             
             #Reload systemd after deleting node units
             sudo systemctl daemon-reload
-            
+            echo -e
             echo -e "${GREEN}Removing auto-updater crontab from host ${CYAN}$HOST${GREEN}...${NC}"
             echo -e      
             crontab -l | grep -v 'elrond-go-scripts-v2/auto-updater.sh'  | crontab -
@@ -258,6 +258,17 @@ case "$1" in
            echo -e "${GREEN}I'll take that as a no then... moving on...${NC}"
             ;;
       esac
+  ;;
+
+'cleanup_hosts')
+  
+  for HOST in $(cat target_ips) 
+    do
+    echo -e
+    echo -e "${GREEN}Running cleanup script on host ${CYAN}$HOST${GREEN}...${NC}"
+    echo -e
+    ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh cleanup"
+    done 
   ;;
 
 'deploy')
