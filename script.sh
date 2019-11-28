@@ -230,7 +230,7 @@ case "$1" in
                         echo -e
                         echo -e "${GREEN}Stopping Elrond Node-$KILLINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
                         echo -e
-                        sudo systemctl stop elrond-node-$KILLINDEX
+                        [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo systemctl stop elrond-node-$KILLINDEX
                         echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
                         echo -e
                         [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
