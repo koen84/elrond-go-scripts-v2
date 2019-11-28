@@ -25,7 +25,7 @@ case "$1" in
   replicant
   
   #Keep track of how many nodes you've started on the machine
-  echo $NUMBEROFNODES | sudo tee -a /opt/node/.numberofnodes
+  echo $NUMBEROFNODES | sudo tee /opt/node/.numberofnodes
   
   paths
   go_lang
