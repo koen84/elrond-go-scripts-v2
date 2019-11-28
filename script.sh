@@ -122,9 +122,13 @@ case "$1" in
   git_clone
   build_node
   
-  DBQUERY=$(curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | jq -r .body | grep '*This release should start with a new DB*' -c)
-  
   INSTALLEDNODES=$(cat /opt/node/.numberofnodes)  
+  curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep "body" > $HOME/tmp
+  
+  if grep -q "*This release should start with a new DB*" "$HOME/tmp" 
+                                        then DBQUERY=1
+                            else DBQUERY=0 
+                  fi
 
 if [ "$DBQUERY" -eq "1" ]; then
 
@@ -138,7 +142,7 @@ if [ "$DBQUERY" -eq "1" ]; then
         cleanup
         update
         sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
-        sudo systemctl start elrond-node-$UPDATEINDEX        
+        sudo systemctl start elrond-node-$UPDATEINDEX       
       done
       
     else
