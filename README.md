@@ -60,3 +60,7 @@ PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
 #### Stop nodes:
  - ./script.sh stop --> stops your local node or nodes
  - ./script.sh stop_hosts --> stops node processes on all hosts (using target_ips file)
+ 
+#### Cleanup everything that has been installed:
+ - ./script.sh cleanup --> erases everything installed by the scripts on the local machine
+ - ./script.sh cleanup_hosts --> erases everything installed by the scripts on all hosts (using target_ips file)

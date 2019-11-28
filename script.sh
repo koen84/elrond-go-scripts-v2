@@ -138,8 +138,7 @@ if [ "$DBQUERY" -eq "1" ]; then
         UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
         sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
         sudo systemctl stop elrond-node-$UPDATEINDEX
-        echo "Database Cleanup Called ! Erasing... " >> $HOME/autoupdate.status
-        echo " " >> $HOME/autoupdate.status
+        echo "Database Cleanup Called ! Erasing DB for elrond-node-$UPDATEINDEX..." >> $HOME/autoupdate.status
         cleanup
         update
         sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
@@ -153,8 +152,7 @@ if [ "$DBQUERY" -eq "1" ]; then
             UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
             sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
             sudo systemctl stop elrond-node-$UPDATEINDEX
-            echo "Database Cleanup Not Needed ! Moving to next step... " >> $HOME/autoupdate.status
-            echo " " >> $HOME/autoupdate.status
+            echo "Database Cleanup Not Needed for elrond-node-$UPDATEINDEX ! Moving to next step... " >> $HOME/autoupdate.status
             update
             sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
             sudo systemctl start elrond-node-$UPDATEINDEX
