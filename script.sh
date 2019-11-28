@@ -215,6 +215,7 @@ case "$1" in
   ;;
 
 'cleanup')
+  paths
   echo -e 
   read -p "Do you want to delete installed nodes (Default No) ? (Yy/Nn)" yn
   echo -e
