@@ -233,10 +233,13 @@ case "$1" in
                         sudo systemctl stop elrond-node-$KILLINDEX
                         echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
                         echo -e
-                        sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
-                        sudo rm -rf /opt/node/node-$KILLINDEX
+                        [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
+                        if [ -d /opt/node/node-$KILLINDEX ]; then sudo rm -rf /opt/node/node-$KILLINDEX
                         
                   done
+            
+            #Reload systemd after deleting node units
+            sudo systemctl daemon-reload
             
             echo -e "${GREEN}Removing auto-updater crontab from host ${CYAN}$HOST${GREEN}...${NC}"
             echo -e      
