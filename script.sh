@@ -234,7 +234,7 @@ case "$1" in
                         echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
                         echo -e
                         [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
-                        if [ -d /opt/node/node-$KILLINDEX ]; then sudo rm -rf /opt/node/node-$KILLINDEX
+                        if [ -d /opt/node/node-$KILLINDEX ]; then sudo rm -rf /opt/node/node-$KILLINDEX; fi
                         
                   done
             
