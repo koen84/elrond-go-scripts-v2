@@ -230,7 +230,7 @@ if [ "$DBQUERY" -eq "1" ]; then
        [Yy]* )
           echo -e "${RED}OK ! Cleaning everything !${NC}"
           
-          NODESTODESTROY=$(cat /opt/node/.numberofnodes)
+          NODESTODESTROY=$(sudo cat /opt/node/.numberofnodes)
               for i in $(seq 1 $NODESTODESTROY);
                   do
                       KILLINDEX=$(( $i - 1 ))
