@@ -183,7 +183,7 @@ if [ "$DBQUERY" -eq "1" ]; then
         echo -e
         echo -e "${GREEN}Starting Elrond Node-$STARTINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
         echo -e
-        sudo systemctl start elrond-node-$STARTINDEX && sudo systemctl status elrond-node-$STARTINDEX
+        sudo systemctl start elrond-node-$STARTINDEX
       done
   ;;
 
