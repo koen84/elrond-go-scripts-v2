@@ -1,66 +1,94 @@
-# Elrond Node deploy scripts V2
+[Elrond Node Deploy Scripts V2]
 
-## Preliminary instructions
-- The current version of scripts allow you to run multiple nodes locally or multiple nodes on multiple remote machines.
-- It relies on SSH (using key pairs) and on RSYNC through SSH
-- The nodes will run in the backround as separate systemd units.
-- This scripts package requires that the user they are run under has the ability to run sudo commands.
-- All of your remote hosts should pe accesible through ssh and use key pairs for connection
+[INTRODUCTION]
 
-#### Scripts Structure:
-- config/variables.cfg - location for custom local & remote system variables 
-- config/functions.cfg - all functions used in main script body are placed here
-- script.sh - main script
+The current scripts version aims to bring the validator experience closer to mainnet levels and also implements an optional auto update feature.
+Following a few simple steps, you can run your node(s) both on local machine and/or multiple remote machines, relying on SSH and RSYNC.
+Each node will run in background as a separate systemd unit.
 
-#### Mandatory things to add:
-- variables.cfg - here you must specify the home folder path and user name for the remote machines and you have the option to use a custom port for ssh
 
+[REQUIREMENTS]
+
+- Running Ubuntu / Debian / CentOS* / Fedora**
+- Running the script requires sudo priviledges.
+- Remote machines should be accesible via SSH using key pairs.
 ```
-CUSTOM_HOME="/home/ubuntu"
-CUSTOM_USER="ubuntu"
-NODE_KEYS_LOCATION="$CUSTOM_HOME/VALIDATOR_KEYS"
-SSHPORT="22"
+* For CentOS, SNAPD must be manually installed prior to running the script.
+https://snapcraft.io/install/go/centos
+
+** For Fedora, SNAPD must be manually installed prior to running the script.
+https://snapcraft.io/install/go/fedora
 ```
+[SCRIPT SETTINGS - MUST BE MODIFIED BEFORE FIRST RUN]
 
-- target_ips - you must create this file inside the scripts folder. Add all of your remote machines ips inside (with newline after each one)
-- .identity - you must create this file inside the scripts config folder and add your PEM (ssh keys) name and path using this format:
-```
-PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
-```
+- config/variables.cfg - used to define username, home path, keys location and SSH port.
+- config/identity 	   - used to define the path to the SSH key - <MAKE SURE YOU EDIT THIS FILE TO MATCH YOUR SETUP!>
+- config/target_ips    - used to define the list of remote machines (IPs or hostnames), each machine in a new line
 
-#### Validator Keys Management:
-- If you have custom validator keys for your nodes the script looks for them in the "<HOME-FOLDER-PATH>/VALIDATOR_KEYS/" folder on each machine
-- The install script expects the keys in zip format follwing this naming pattern (from node 0 to x on each machine/instance):
+[KEY MANAGEMENT]
 
-```
-<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-0.zip
-<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-1.zip
-.
-.
-.
-<HOME-FOLDER-PATH>/VALIDATOR_KEYS/node-x.zip
-```
+Each machine must have its own key set(s) copied locally. 
+For running only one node per machine, the 2 keys (initialBalancesSk.pem and initialNodesSk.pem) should be placed in a zip file named 'node-0.zip', in the path previously specified in variables.cfg file (NODE_KEYS_LOCATION)
+For running additional nodes on the same machine, simply create additional zip files incrementing the numeric value (i.e. for second node: 'node-1.zip', for third node: 'node-2.zip', etc..), containing the additional key sets.
 
-- If there are not enough keys for all nodes on a specific machine new keys will be automatically generated (but those nodes will only be observers)
+File structure example:
 
-## Script functions
+	$HOME/VALIDATOR_KEYS/node-0.zip
+	$HOME/VALIDATOR_KEYS/node-1.zip
+	$HOME/VALIDATOR_KEYS/node-2.zip
+	...
+	$HOME/VALIDATOR_KEYS/node-x.zip
+	
 
-#### First time install:
- - ./script.sh install --> single or multiple nodes local machine install
- - ./script.sh install_hosts --> install nodes on multiple hosts (using target_ips file)
-
-#### Update/upgrade node:
- - ./script.sh upgrade --> upgrade a single or multiple local nodes 
- - ./script.sh upgrade_hosts --> upgrade nodes on all hosts (using target_ips file)
-
-#### Start nodes:
- - ./script.sh start --> start your local node or nodes
- - ./script.sh start_hosts --> start node processes on all hosts (using target_ips file)
+If no key sets are found in the specified location, the script will generate new keys and the node(s) will run as Observer(s).
  
-#### Stop nodes:
- - ./script.sh stop --> stops your local node or nodes
- - ./script.sh stop_hosts --> stops node processes on all hosts (using target_ips file)
- 
-#### Cleanup everything that has been installed:
- - ./script.sh cleanup --> erases everything installed by the scripts on the local machine
- - ./script.sh cleanup_hosts --> erases everything installed by the scripts on all hosts (using target_ips file)
+[RUNNING THE SCRIPT]
+
+	[FIRST RUN]
+		#installs the node(s) on the local machine
+		./script.sh install 
+		
+		#installs the node(s) on all the machines specified in 'target_ips' file 
+		./script.sh install-remote 
+		
+		Running the script with the 'install' or 'install-remote' parameter will prompt for each machine the following:
+			- number of nodes to be ran on the machine
+			- validator display name for each node (this will only be asked one time)
+			- optionally enable the auto-update feature (default 'No') - see [AUTO UPDATE] section for more details	
+			
+	[UPGRADE]
+		#upgrades the node(s) on the local machine
+		./script.sh upgrade
+		
+		#upgrades the node(s) on all the machines specified in 'target_ips' file
+		./script.sh upgrade-remote 
+		
+	[START]
+		#starts the node(s) on the local machine
+		./script.sh start
+		
+		#starts the node(s) on all the machines specified in 'target_ips' file
+		./script.sh start-remote 
+		
+	[STOP]
+		#stops the node(s) on the local machine
+		./script.sh stop
+		
+		#stops the node(s) on all the machines specified in 'target_ips' file
+		./script.sh stop-remote 
+				
+	[CLEANUP]
+		#Removes all the node(s) files on the local machine
+		./script.sh cleanup
+		
+		#Removes all the node(s) files on all the machines specified in 'target_ips' file
+		./script.sh cleanup-remote 
+
+[AUTO UPDATE]
+
+If you choose to enable this function, a cron job will be created. The job searches every 10 minutes for new releases.
+You can check the status of the auto-update job in the file $HOME/autoupdate.status
+
+[FINAL THOUGHTS]
+
+	KEEP CALM AND VALIDATE ON ELROND NETWORK!
