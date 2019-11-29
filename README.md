@@ -8,8 +8,8 @@
 - All of your remote hosts should pe accesible through ssh and use key pairs for connection
 
 #### Scripts Structure:
-- configs/variables.cfg - location for custom local & remote system variables 
-- configs/functions.cfg - all functions used in main script body are placed here
+- config/variables.cfg - location for custom local & remote system variables 
+- config/functions.cfg - all functions used in main script body are placed here
 - script.sh - main script
 
 #### Mandatory things to add:
@@ -23,7 +23,7 @@ SSHPORT="22"
 ```
 
 - target_ips - you must create this file inside the scripts folder. Add all of your remote machines ips inside (with newline after each one)
-- .identity - you must create this file inside the scripts configs folder and add your PEM (ssh keys) name and path using this format:
+- .identity - you must create this file inside the scripts config folder and add your PEM (ssh keys) name and path using this format:
 ```
 PEM="<PATH TO YOUR SERVER ACCESS KEY>/<ACCESS KEY NAME>"
 ```

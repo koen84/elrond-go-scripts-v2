@@ -7,9 +7,9 @@ CYAN='\x1B[0;36m'
 GREEN='\x1B[0;32m'
 NC='\x1B[0m'
 
-source configs/.identity
-source configs/variables.cfg
-source configs/functions.cfg
+source config/identity
+source config/variables.cfg
+source config/functions.cfg
 
 
 case "$1" in

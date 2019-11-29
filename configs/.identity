@@ -1,3 +1,0 @@
-#Path to the PEM used to connect to remote machines
-# EXAMPLE:
-# PEM="/home/myuser/.ssh/id_rsa"
