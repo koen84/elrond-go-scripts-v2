@@ -89,6 +89,24 @@ If no key sets are found in the specified location, the script will generate new
 If you choose to enable this function, a cron job will be created. The job searches every 10 minutes for new releases.
 You can check the status of the auto-update job in the file $HOME/autoupdate.status
 
+[TERMUI NODE INFO]
+
+This version of scripts will start your nodes as separate systemd services an additional termui binary will be build for you on each machine and placed in your $CUSTOM_HOME folder.
+During the install process your nodes will have rest api sockets assigned to them following this pattern:
+
+	elrond-node-0 will use localhost:8080
+	elrond-node-1 will use localhost:8081
+	elrond-node-2 will use localhost:8082
+	...
+	elrond-node-x will use localhost:(8080+x)
+	
+You can check the status of each of your nodes in turn by going to your $CUSTOM_HOME folder and using this command (making sure you select the proper socket for the desired node:
+
+	./termui -address 127.0.0.1:8080
+	or
+	./termui -address 127.0.0.1:8081
+	...
+
 [FINAL THOUGHTS]
 
 	KEEP CALM AND VALIDATE ON ELROND NETWORK!
