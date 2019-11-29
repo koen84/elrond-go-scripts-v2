@@ -66,7 +66,7 @@ case "$1" in
 
   ;;
 
-'install_hosts')
+'install-remote')
   deploy_to_host
   for HOST in $(cat config/target_ips) 
     do
@@ -160,7 +160,7 @@ if [ "$DBQUERY" -eq "1" ]; then
     fi
   ;;
 
-'upgrade_hosts')
+'upgrade-remote')
   deploy_to_host
   for HOST in $(cat config/target_ips) 
     do
@@ -187,7 +187,7 @@ if [ "$DBQUERY" -eq "1" ]; then
       done
   ;;
 
-'start_hosts')
+'start-remote')
   
   for HOST in $(cat config/target_ips) 
     do
@@ -210,7 +210,7 @@ if [ "$DBQUERY" -eq "1" ]; then
       done
   ;;
 
-'stop_hosts')
+'stop-remote')
   
   for HOST in $(cat config/target_ips) 
     do
@@ -267,7 +267,7 @@ if [ "$DBQUERY" -eq "1" ]; then
       esac
   ;;
 
-'cleanup_hosts')
+'cleanup-remote')
   
   for HOST in $(cat config/target_ips) 
     do
@@ -283,6 +283,6 @@ if [ "$DBQUERY" -eq "1" ]; then
   ;;
 
 *)
-  echo "Usage: Missing parameter ! [install|install_hosts|upgrade|upgrade_hosts|start|start_hosts|stop|stop_hosts|cleanup|cleanup_hosts]"
+  echo "Usage: Missing parameter ! [install|install-remote|upgrade|upgrade-remote|start|start-remote|stop|stop-remote|cleanup|cleanup-remote]"
   ;;
 esac
