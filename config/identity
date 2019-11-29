@@ -1,4 +1,3 @@
 #Path to the PEM used to connect to remote machines
 # EXAMPLE:
 # PEM="/home/myuser/.ssh/id_rsa"
-PEM="/Users/vali/Crypt/itnt.credentials/keys/elrond-nodes-testing.pem"
