@@ -68,7 +68,7 @@ case "$1" in
 
 'install_hosts')
   deploy_to_host
-  for HOST in $(cat target_ips) 
+  for HOST in $(cat config/target_ips) 
     do
       echo -e
       echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
@@ -162,7 +162,7 @@ if [ "$DBQUERY" -eq "1" ]; then
 
 'upgrade_hosts')
   deploy_to_host
-  for HOST in $(cat target_ips) 
+  for HOST in $(cat config/target_ips) 
     do
       echo -e
       echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
@@ -189,7 +189,7 @@ if [ "$DBQUERY" -eq "1" ]; then
 
 'start_hosts')
   
-  for HOST in $(cat target_ips) 
+  for HOST in $(cat config/target_ips) 
     do
     echo -e
     echo -e "${GREEN}Starting Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
@@ -212,7 +212,7 @@ if [ "$DBQUERY" -eq "1" ]; then
 
 'stop_hosts')
   
-  for HOST in $(cat target_ips) 
+  for HOST in $(cat config/target_ips) 
     do
     echo -e
     echo -e "${GREEN}Stopping Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
@@ -269,7 +269,7 @@ if [ "$DBQUERY" -eq "1" ]; then
 
 'cleanup_hosts')
   
-  for HOST in $(cat target_ips) 
+  for HOST in $(cat config/target_ips) 
     do
     echo -e
     echo -e "${GREEN}Running cleanup script on host ${CYAN}$HOST${GREEN}...${NC}"
