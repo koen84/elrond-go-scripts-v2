@@ -30,6 +30,7 @@ if [ -z "$LATEST" ]; then
                             cd $HOME/elrond-go-scripts-v2/ && bash script.sh auto_upgrade
                               
                               else
+                                echo "Latest tag on github: $LATEST" >> $HOME/autoupdate.status
                                 echo "Nothing to do here... you are on the latest tag !" >> $HOME/autoupdate.status
                               fi
     fi
