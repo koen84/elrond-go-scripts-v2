@@ -25,7 +25,7 @@ case "$1" in
   replicant
   
   #Keep track of how many nodes you've started on the machine
-  echo $NUMBEROFNODES | sudo tee /opt/node/.numberofnodes
+  echo "$NUMBEROFNODES" > $CUSTOM_HOME/.numberofnodes
   
   paths
   go_lang
@@ -40,7 +40,7 @@ case "$1" in
   for i in $(seq 1 $NUMBEROFNODES); 
         do 
          INDEX=$(( $i - 1 ))
-         WORKDIR="/opt/node/node-$INDEX"
+         WORKDIR="$CUSTOM_HOME/elrond-nodes/node-$INDEX"
          
          install
          node_name
@@ -85,19 +85,18 @@ case "$1" in
   paths
   #Remove previously cloned repos  
   if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; echo -e; echo -e "${RED}--> Repos present. Removing and fetching again...${NC}"; echo -e; fi
-  #Backup prefs.toml which has node name
   git_clone
   build_node
   
-  INSTALLEDNODES=$(cat /opt/node/.numberofnodes)
+  INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)
   
   #Run the update process for each node
   for i in $(seq 1 $INSTALLEDNODES);
       do
         UPDATEINDEX=$(( $i - 1 ))
-        UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
+        UPDATEWORKDIR="$CUSTOM_HOME/elrond-nodes/node-$UPDATEINDEX"
         sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
-  
+        
         read -p "Do you want to remove the current Node DB & Logs for node-$UPDATEINDEX ? (yes/no): " CLEAN
         if [ "$CLEAN" != "no" ]
                   then
@@ -122,7 +121,7 @@ case "$1" in
   git_clone
   build_node
   
-  INSTALLEDNODES=$(cat /opt/node/.numberofnodes)  
+  INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)  
   curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep "body" > $HOME/tmp
   
   if grep -q "*This release should start with a new DB*" "$HOME/tmp" 
@@ -135,7 +134,7 @@ if [ "$DBQUERY" -eq "1" ]; then
   for i in $(seq 1 $INSTALLEDNODES);
       do
         UPDATEINDEX=$(( $i - 1 ))
-        UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
+        UPDATEWORKDIR="$CUSTOM_HOME/elrond-nodes/node-$UPDATEINDEX"
         sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
         sudo systemctl stop elrond-node-$UPDATEINDEX
         echo "Database Cleanup Called ! Erasing DB for elrond-node-$UPDATEINDEX..." >> $HOME/autoupdate.status
@@ -149,7 +148,7 @@ if [ "$DBQUERY" -eq "1" ]; then
       for i in $(seq 1 $INSTALLEDNODES);
           do
             UPDATEINDEX=$(( $i - 1 ))
-            UPDATEWORKDIR="/opt/node/node-$UPDATEINDEX"
+            UPDATEWORKDIR="$CUSTOM_HOME/elrond-nodes/node-$UPDATEINDEX"
             sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
             sudo systemctl stop elrond-node-$UPDATEINDEX
             echo "Database Cleanup Not Needed for elrond-node-$UPDATEINDEX ! Moving to next step... " >> $HOME/autoupdate.status
@@ -158,6 +157,9 @@ if [ "$DBQUERY" -eq "1" ]; then
             sudo systemctl start elrond-node-$UPDATEINDEX
           done
     fi
+
+    rm $HOME/tmp    
+    
   ;;
 
 'upgrade-remote')
@@ -176,7 +178,7 @@ if [ "$DBQUERY" -eq "1" ]; then
   ;;
 
 'start')
-  NODESTOSTART=$(cat /opt/node/.numberofnodes)
+  NODESTOSTART=$(cat $CUSTOM_HOME/.numberofnodes)
   for i in $(seq 1 $NODESTOSTART);
       do
         STARTINDEX=$(( $i - 1 ))
@@ -199,7 +201,7 @@ if [ "$DBQUERY" -eq "1" ]; then
   ;;
 
 'stop')
-  NODESTOSTOP=$(cat /opt/node/.numberofnodes)
+  NODESTOSTOP=$(cat $CUSTOM_HOME/.numberofnodes)
   for i in $(seq 1 $NODESTOSTOP);
       do
         STOPINDEX=$(( $i - 1 ))
@@ -230,7 +232,7 @@ if [ "$DBQUERY" -eq "1" ]; then
        [Yy]* )
           echo -e "${RED}OK ! Cleaning everything !${NC}"
           
-          NODESTODESTROY=$(sudo cat /opt/node/.numberofnodes)
+          NODESTODESTROY=$(cat $CUSTOM_HOME/.numberofnodes)
               for i in $(seq 1 $NODESTODESTROY);
                   do
                       KILLINDEX=$(( $i - 1 ))
@@ -241,7 +243,7 @@ if [ "$DBQUERY" -eq "1" ]; then
                         echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
                         echo -e
                         [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
-                        if [ -d /opt/node/node-$KILLINDEX ]; then sudo rm -rf /opt/node/node-$KILLINDEX; fi
+                        if [ -d $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX ]; then sudo rm -rf $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX; fi
                         
                   done
             

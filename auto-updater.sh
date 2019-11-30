@@ -4,6 +4,7 @@ set -e
 #Handle some paths
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 LATEST=$(curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
