@@ -9,16 +9,10 @@ Each node will run in background as a separate systemd unit.
 
 [REQUIREMENTS]
 
-- Running Ubuntu / Debian / CentOS* / Fedora**
+- Running Ubuntu 18.04 & up / Debian / CentOS 8 / Fedora 30
 - Running the script requires sudo priviledges.
 - Remote machines should be accesible via SSH using key pairs.
-```
-* For CentOS, SNAPD must be manually installed prior to running the script.
-https://snapcraft.io/install/go/centos
 
-** For Fedora, SNAPD must be manually installed prior to running the script.
-https://snapcraft.io/install/go/fedora
-```
 [SCRIPT SETTINGS - MUST BE MODIFIED BEFORE FIRST RUN]
 
 - config/variables.cfg - used to define username, home path, keys location and SSH port.
