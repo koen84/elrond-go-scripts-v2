@@ -103,12 +103,12 @@ case "$1" in
                     sudo systemctl stop elrond-node-$UPDATEINDEX
                     cleanup
                     update
-                    sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+                    mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml
                     sudo systemctl start elrond-node-$UPDATEINDEX
                   else
                     sudo systemctl stop elrond-node-$UPDATEINDEX
                     update
-                    sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+                    mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml
                     sudo systemctl start elrond-node-$UPDATEINDEX
             fi
       done
@@ -135,12 +135,12 @@ if [ "$DBQUERY" -eq "1" ]; then
       do
         UPDATEINDEX=$(( $i - 1 ))
         UPDATEWORKDIR="$CUSTOM_HOME/elrond-nodes/node-$UPDATEINDEX"
-        sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
+        cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
         sudo systemctl stop elrond-node-$UPDATEINDEX
         echo "Database Cleanup Called ! Erasing DB for elrond-node-$UPDATEINDEX..." >> $HOME/autoupdate.status
         cleanup
         update
-        sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+        mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml
         sudo systemctl start elrond-node-$UPDATEINDEX       
       done
       
@@ -149,11 +149,11 @@ if [ "$DBQUERY" -eq "1" ]; then
           do
             UPDATEINDEX=$(( $i - 1 ))
             UPDATEWORKDIR="$CUSTOM_HOME/elrond-nodes/node-$UPDATEINDEX"
-            sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
+            cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
             sudo systemctl stop elrond-node-$UPDATEINDEX
             echo "Database Cleanup Not Needed for elrond-node-$UPDATEINDEX ! Moving to next step... " >> $HOME/autoupdate.status
             update
-            sudo mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml && sudo chown node:node $UPDATEWORKDIR/config/prefs.toml
+            mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml
             sudo systemctl start elrond-node-$UPDATEINDEX
           done
     fi
