@@ -23,10 +23,8 @@ case "$1" in
   
   prerequisites
   replicant
-  
   #Keep track of how many nodes you've started on the machine
   echo "$NUMBEROFNODES" > $CUSTOM_HOME/.numberofnodes
-  
   paths
   go_lang
   #If repos are present and you run install again this will clean up for you :D
@@ -41,12 +39,16 @@ case "$1" in
         do 
          INDEX=$(( $i - 1 ))
          WORKDIR="$CUSTOM_HOME/elrond-nodes/node-$INDEX"
-         
          install
          node_name
          keys
          systemd
        done
+
+  echo -e
+  echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
+  echo -e "${GREEN}---> This next section asks if you want to install the ${CYAN}AUTOPUDATER${GREEN}${NC}"
+  echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
 
   echo -e 
   read -p "Do you want to install the auto-update function (Default No) ? (Yy/Nn)" yn
@@ -63,7 +65,6 @@ case "$1" in
            echo -e "${GREEN}I'll take that as a no then...${NC}"
             ;;
       esac
-
   ;;
 
 'install-remote')
@@ -95,9 +96,9 @@ case "$1" in
       do
         UPDATEINDEX=$(( $i - 1 ))
         UPDATEWORKDIR="$CUSTOM_HOME/elrond-nodes/node-$UPDATEINDEX"
-        sudo cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
+        cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
         
-        read -p "Do you want to remove the current Node DB & Logs for node-$UPDATEINDEX ? (yes/no): " CLEAN
+        read -p "Do you want to remove the current Node DB & Logs for node-$UPDATEINDEX ? (yes/no):" CLEAN
         if [ "$CLEAN" != "no" ]
                   then
                     sudo systemctl stop elrond-node-$UPDATEINDEX
@@ -116,7 +117,7 @@ case "$1" in
 
 'auto_upgrade')
   paths
-  #Remove previously cloned repos  
+  #Remove previously cloned repos
   if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi
   git_clone
   build_node
@@ -131,18 +132,18 @@ case "$1" in
 
 if [ "$DBQUERY" -eq "1" ]; then
 
-  for i in $(seq 1 $INSTALLEDNODES);
-      do
-        UPDATEINDEX=$(( $i - 1 ))
-        UPDATEWORKDIR="$CUSTOM_HOME/elrond-nodes/node-$UPDATEINDEX"
-        cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
-        sudo systemctl stop elrond-node-$UPDATEINDEX
-        echo "Database Cleanup Called ! Erasing DB for elrond-node-$UPDATEINDEX..." >> $HOME/autoupdate.status
-        cleanup
-        update
-        mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml
-        sudo systemctl start elrond-node-$UPDATEINDEX       
-      done
+                  for i in $(seq 1 $INSTALLEDNODES);
+                      do
+                        UPDATEINDEX=$(( $i - 1 ))
+                        UPDATEWORKDIR="$CUSTOM_HOME/elrond-nodes/node-$UPDATEINDEX"
+                        cp $UPDATEWORKDIR/config/prefs.toml $UPDATEWORKDIR/config/prefs.toml.save
+                        sudo systemctl stop elrond-node-$UPDATEINDEX
+                        echo "Database Cleanup Called ! Erasing DB for elrond-node-$UPDATEINDEX..." >> $HOME/autoupdate.status
+                        cleanup
+                        update
+                        mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml
+                        sudo systemctl start elrond-node-$UPDATEINDEX       
+                      done
       
     else
       for i in $(seq 1 $INSTALLEDNODES);
@@ -159,7 +160,6 @@ if [ "$DBQUERY" -eq "1" ]; then
     fi
 
     rm $HOME/tmp    
-    
   ;;
 
 'upgrade-remote')
@@ -190,7 +190,6 @@ if [ "$DBQUERY" -eq "1" ]; then
   ;;
 
 'start-remote')
-  
   for HOST in $(cat config/target_ips) 
     do
     echo -e
@@ -213,13 +212,12 @@ if [ "$DBQUERY" -eq "1" ]; then
   ;;
 
 'stop-remote')
-  
   for HOST in $(cat config/target_ips) 
     do
-    echo -e
-    echo -e "${GREEN}Stopping Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
-    echo -e
-    ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh stop"
+      echo -e
+      echo -e "${GREEN}Stopping Elrond Node binaries on host ${CYAN}$HOST${GREEN}...${NC}"
+      echo -e
+      ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh stop"
     done 
   ;;
 
@@ -244,7 +242,6 @@ if [ "$DBQUERY" -eq "1" ]; then
                         echo -e
                         [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
                         if [ -d $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX ]; then sudo rm -rf $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX; fi
-                        
                   done
             
             #Reload systemd after deleting node units
@@ -279,6 +276,43 @@ if [ "$DBQUERY" -eq "1" ]; then
     ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh cleanup"
     done 
   ;;
+
+'crontab')
+  echo -e
+  echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
+  echo -e "${GREEN}---> This next section asks if you want to install the ${CYAN}AUTOPUDATER${GREEN}${NC}"
+  echo -e "${GREEN}--------------------------------------------------------------------------------${NC}"
+
+  echo -e 
+  read -p "Do you want to install the auto-update function (Default No) ? (Yy/Nn)" yn
+  echo -e
+  case $yn in
+       [Yy]* )
+          echo -e "${GREEN}Adding auto-update to crontab !${NC}"
+          if (crontab -l | grep -q "auto-updater.sh"); then echo "Crontab already installed"; else autoupdate; fi  
+            ;;
+       [Nn]* )
+          echo -e "${GREEN}Fine... let's continue...${NC}"
+            ;;
+           * )
+           echo -e "${GREEN}I'll take that as a no then...${NC}"
+            ;;
+      esac
+  ;;
+
+'crontab-remote')
+  
+  for HOST in $(cat config/target_ips) 
+    do
+    echo -e
+    echo -e "${GREEN}Running auto-update cronjob install script on host ${CYAN}$HOST${GREEN}...${NC}"
+    echo -e
+    ssh -t -o StrictHostKeyChecking=no -p $SSHPORT -i "$PEM" $CUSTOM_USER@$HOST "cd $CUSTOM_HOME/$DIRECTORY_NAME && ./script.sh crontab"
+    done 
+  ;;
+
+
+
 
 'deploy')
   deploy_to_host
