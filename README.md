@@ -107,9 +107,9 @@ During the install process your nodes will have rest api sockets assigned to the
 
 You can check the status of each of your nodes in turn by going to your $CUSTOM_HOME/elrond-utils/ folder and using this command (making sure you select the proper socket for the desired node):
 
-	./elrond-utils/termui -address 127.0.0.1:8080
+	./elrond-utils/termui -address localhost:8080
 	or
-	./elrond-utils/termui -address 127.0.0.1:8081
+	./elrond-utils/termui -address localhost:8081
 	...
 
 ## LOGVIEWER INFO
@@ -127,9 +127,9 @@ During the install process your nodes will have rest api sockets assigned to the
 
 You can check the status of each of your nodes in turn by going to your $CUSTOM_HOME/elrond-utils/ folder and using this command (making sure you select the proper socket for the desired node):
 
-	./elrond-utils/logviewer -address 127.0.0.1:8080
+	./elrond-utils/logviewer -address localhost:8080
 	or
-	./elrond-utils/logviewer -address 127.0.0.1:8081
+	./elrond-utils/logviewer -address localhost:8081
 	...
 
 If the log level is not provided, it will start with the `*:INFO` pattern, meaning that all subpackages that assemble the elrond-go binary will only output INFO (or up) messages.
