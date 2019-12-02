@@ -8,10 +8,11 @@ GREEN='\x1B[0;32m'
 NC='\x1B[0m'
 
 source config/identity
-source config/functions.cfg
-prerequisites
 source config/variables.cfg
+source config/functions.cfg
 
+#Check if CUSTOM_HOME exists
+if ! [ -d "$CUSTOM_HOME" ]; then echo -e "${RED}Please configure your variables first ! (variables.cfg --> CUSTOM_HOME & CUSTOM_USER)${NC}"; exit; fi
 
 case "$1" in
 
@@ -22,6 +23,7 @@ case "$1" in
       NUMBEROFNODES = 1
   fi
   
+  prerequisites
   replicant
   #Keep track of how many nodes you've started on the machine
   echo "$NUMBEROFNODES" > $CUSTOM_HOME/.numberofnodes
