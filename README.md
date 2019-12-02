@@ -36,6 +36,12 @@ File structure example:
 
 If no key sets are found in the specified location, the script will generate new keys and the node(s) will run as Observer(s).
  
+Example of adding your validator keys to a zip file (node-0.zip):
+1. Navigate to your current node install path and go into the /config folder
+2. Issue the command to create your zip archive: `zip node-0.zip *.pem` (repeat for each node on that machine incrementing the value 0,1,2...x)
+3. Move the zip archive to the `$HOME/VALIDATOR_KEYS` folder: `mv node-0.zip $HOME/VALIDATOR_KEYS/` (repeat for all nodes on that machine)
+
+
 ## RUNNING THE SCRIPT
 
 	[FIRST RUN]

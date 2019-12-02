@@ -22,7 +22,6 @@ case "$1" in
   
   prerequisites
   replicant
-  
   #Check if CUSTOM_HOME exists
   if ! [ -d "$CUSTOM_HOME" ]; then echo -e "${RED}Please configure your variables first ! (variables.cfg --> CUSTOM_HOME & CUSTOM_USER)${NC}"; exit; fi
   
