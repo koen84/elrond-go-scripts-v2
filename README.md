@@ -41,7 +41,6 @@ Example of adding your validator keys to a zip file (node-0.zip):
 2. Issue the command to create your zip archive: `zip node-0.zip *.pem` (repeat for each node on that machine incrementing the value 0,1,2...x)
 3. Move the zip archive to the `$HOME/VALIDATOR_KEYS` folder: `mv node-0.zip $HOME/VALIDATOR_KEYS/` (repeat for all nodes on that machine)
 
-
 ## RUNNING THE SCRIPT
 
 	[FIRST RUN]

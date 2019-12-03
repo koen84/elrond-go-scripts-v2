@@ -30,7 +30,7 @@ case "$1" in
   paths
   go_lang
   #If repos are present and you run install again this will clean up for you :D
-  if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then echo -e "${RED}--> Repos present. Please run update.sh script...${NC}"; echo -e; exit; fi
+  if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then echo -e "${RED}--> Repos present. Either run the upgrade command or cleanup & install again...${NC}"; echo -e; exit; fi
   mkdir -p $GOPATH/src/github.com/ElrondNetwork
   git_clone
   build_node
