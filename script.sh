@@ -45,6 +45,7 @@ case "$1" in
          node_name
          keys
          systemd
+         install_sudofix
        done
 
   echo -e
@@ -322,7 +323,16 @@ if [ "$DBQUERY" -eq "1" ]; then
 'deploy')
   deploy_to_host
   ;;
-
+  
+'sudofix')
+        INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)
+        for i in $(seq 1 $INSTALLEDNODES);
+                do
+                        INDEX=$(( $i - 1 ))
+                        install_sudofix
+                done
+        ;;
+        
 *)
   echo "Usage: Missing parameter ! [install|install-remote|upgrade|upgrade-remote|start|start-remote|stop|stop-remote|cleanup|cleanup-remote]"
   ;;
