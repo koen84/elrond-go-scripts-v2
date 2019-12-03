@@ -44,6 +44,7 @@ case "$1" in
          INDEX=$(( $i - 1 ))
          WORKDIR="$CUSTOM_HOME/elrond-nodes/node-$INDEX"
          install
+         install_utils
          node_name
          keys
          systemd
@@ -93,6 +94,7 @@ case "$1" in
   if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; echo -e; echo -e "${RED}--> Repos present. Removing and fetching again...${NC}"; echo -e; fi
   git_clone
   build_node
+  install_utils
   
   INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)
   
@@ -126,6 +128,7 @@ case "$1" in
   if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi
   git_clone
   build_node
+  install_utils
   
   INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)  
   curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep "body" > $HOME/tmp
@@ -147,7 +150,7 @@ if [ "$DBQUERY" -eq "1" ]; then
                         cleanup
                         update
                         mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml
-                        sudo systemctl start elrond-node-$UPDATEINDEX       
+                        sudo systemctl start elrond-node-$UPDATEINDEX
                       done
       
     else
