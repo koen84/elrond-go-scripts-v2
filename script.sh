@@ -122,7 +122,7 @@ case "$1" in
 'auto_upgrade')
   paths
   #Remove previously cloned repos
-  if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi
+  if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi
   git_clone
   build_node
   
