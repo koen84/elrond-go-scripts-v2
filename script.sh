@@ -261,8 +261,8 @@ if [ "$DBQUERY" -eq "1" ]; then
             echo -e "${GREEN}Removing elrond utils...${NC}"
             echo -e      
             
-            if ps -all | grep -q termui; then killall termui; rm $CUSTOM_HOME/elrond-utils/termui; fi
-            if ps -all | grep -q logviewer; then killall logviewer; rm $CUSTOM_HOME/elrond-utils/logviewer; fi
+            if ps -all | grep -q termui; then killall termui; sleep 2; rm $CUSTOM_HOME/elrond-utils/termui; fi
+            if ps -all | grep -q logviewer; then killall logviewer; sleep 2; rm $CUSTOM_HOME/elrond-utils/logviewer; fi
             
             echo -e
             echo -e "${GREEN}Removing auto-updater crontab from host ${CYAN}$HOST${GREEN}...${NC}"
