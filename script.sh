@@ -233,19 +233,21 @@ if [ "$DBQUERY" -eq "1" ]; then
        [Yy]* )
           echo -e "${RED}OK ! Cleaning everything !${NC}"
           
-          NODESTODESTROY=$(cat $CUSTOM_HOME/.numberofnodes)
-              for i in $(seq 1 $NODESTODESTROY);
-                  do
-                      KILLINDEX=$(( $i - 1 ))
-                        echo -e
-                        echo -e "${GREEN}Stopping Elrond Node-$KILLINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
-                        echo -e
-                        [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo systemctl stop elrond-node-$KILLINDEX
-                        echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
-                        echo -e
-                        [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
-                        if [ -d $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX ]; then sudo rm -rf $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX; fi
-                  done
+          if [[ -f $CUSTOM_HOME/.numberofnodes ]]; then
+            NODESTODESTROY=$(cat $CUSTOM_HOME/.numberofnodes)
+                for i in $(seq 1 $NODESTODESTROY);
+                    do
+                        KILLINDEX=$(( $i - 1 ))
+                          echo -e
+                          echo -e "${GREEN}Stopping Elrond Node-$KILLINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
+                          echo -e
+                          [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo systemctl stop elrond-node-$KILLINDEX
+                          echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
+                          echo -e
+                          [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
+                          if [ -d $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX ]; then sudo rm -rf $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX; fi
+                    done
+          fi
             
             #Reload systemd after deleting node units
             sudo systemctl daemon-reload
