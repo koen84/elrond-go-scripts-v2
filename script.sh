@@ -16,7 +16,7 @@ case "$1" in
 'install')
   read -p "How many nodes do you want to run ? : " NUMBEROFNODES
   re='^[0-9]+$'
-  if ! [[ $NUMBEROFNODES =~ $re ]]
+  if ! [[ $NUMBEROFNODES =~ $re ]] && [ "$NUMBEROFNODES" -gt 0 ]
   then
       NUMBEROFNODES = 1
   fi
