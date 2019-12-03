@@ -260,6 +260,9 @@ if [ "$DBQUERY" -eq "1" ]; then
             echo -e "${GREEN}Removing cloned elrond-go & elrond-configs repo from host ${CYAN}$HOST${GREEN}...${NC}"
             echo -e      
             if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi      
+            
+            # remove the sudofix file
+            sudo rm -f $sudofix
             ;;
             
        [Nn]* )
