@@ -30,7 +30,7 @@ if [ -z "$LATEST" ]; then
               if [ "$CLONEDTAG" != "$LATEST" ]; then
                             echo "Latest tag on github: $LATEST" >> $HOME/autoupdate.status
                             echo "Triggering automated upgrade !" >> $HOME/autoupdate.status
-                            cd $CUSTOM_HOME/elrond-go-scripts-v2/ && bash script.sh auto_upgrade
+                            cd $SCRIPTS_LOCATION && bash script.sh auto_upgrade
                               
                               else
                                 echo "Latest tag on github: $LATEST" >> $HOME/autoupdate.status
