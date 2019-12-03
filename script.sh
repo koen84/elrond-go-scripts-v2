@@ -21,11 +21,12 @@ case "$1" in
       NUMBEROFNODES = 1
   fi
   
-  prerequisites
-  replicant
   #Check if CUSTOM_HOME exists
   if ! [ -d "$CUSTOM_HOME" ]; then echo -e "${RED}Please configure your variables first ! (variables.cfg --> CUSTOM_HOME & CUSTOM_USER)${NC}"; exit; fi
-  
+
+  prerequisites
+  replicant
+
   #Keep track of how many nodes you've started on the machine
   echo "$NUMBEROFNODES" > $CUSTOM_HOME/.numberofnodes
   paths
