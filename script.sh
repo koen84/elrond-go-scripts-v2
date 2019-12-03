@@ -67,6 +67,7 @@ case "$1" in
            echo -e "${GREEN}I'll take that as a no then...${NC}"
             ;;
       esac
+  sudo chown -R $CUSTOM_USER:$CUSTOM_USER $CUSTOM_HOME/elrond-nodes
   ;;
 
 'install-remote')
