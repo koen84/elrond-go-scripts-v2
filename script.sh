@@ -256,7 +256,7 @@ if [ "$DBQUERY" -eq "1" ]; then
             echo -e
             echo -e "${GREEN}Removing auto-updater crontab from host ${CYAN}$HOST${GREEN}...${NC}"
             echo -e      
-            crontab -l | grep -v 'elrond-go-scripts-v2/auto-updater.sh'  | crontab -
+            crontab -l | grep -v '/auto-updater.sh'  | crontab -
             
             echo -e "${GREEN}Removing cloned elrond-go & elrond-configs repo from host ${CYAN}$HOST${GREEN}...${NC}"
             echo -e      
