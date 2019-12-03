@@ -292,7 +292,7 @@ if [ "$DBQUERY" -eq "1" ]; then
   case $yn in
        [Yy]* )
           echo -e "${GREEN}Adding auto-update to crontab !${NC}"
-          if (crontab -l | grep -q "auto-updater.sh"); then echo "Crontab already installed"; else autoupdate; fi  
+          if (crontab -l 2>/dev/null | grep -q "auto-updater.sh"); then echo "Crontab already installed"; else autoupdate; fi  
             ;;
        [Nn]* )
           echo -e "${GREEN}Fine... let's continue...${NC}"
