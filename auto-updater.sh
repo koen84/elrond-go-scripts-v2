@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-source config/variables.cfg
-
 #Handle some paths
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
@@ -30,7 +28,7 @@ if [ -z "$LATEST" ]; then
               if [ "$CLONEDTAG" != "$LATEST" ]; then
                             echo "Latest tag on github: $LATEST" >> $HOME/autoupdate.status
                             echo "Triggering automated upgrade !" >> $HOME/autoupdate.status
-                            cd $SCRIPTS_LOCATION && bash script.sh auto_upgrade
+                            cd $HOME/elrond-go-scripts-v2/ && bash script.sh auto_upgrade
                               
                               else
                                 echo "Latest tag on github: $LATEST" >> $HOME/autoupdate.status
