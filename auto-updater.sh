@@ -17,8 +17,8 @@ CURRENT=$(curl -s http://localhost:8080/node/status | jq -r .details.erd_app_ver
 #See current available version
 LATEST=$(curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
-echo " " >> $HOME/autoupdate.status
-echo `date` >> $HOME/autoupdate.status
+echo " " >> $CUSTOM_HOME/autoupdate.status
+echo `date` >> $CUSTOM_HOME/autoupdate.status
 
 if [ -z "$CURRENT" ]; then
                         echo "Could not get latest current version !!! Node(s) not running ! Aborting..." >> $CUSTOM_HOME/autoupdate.status
