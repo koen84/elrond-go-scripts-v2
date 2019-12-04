@@ -277,6 +277,10 @@ if [ "$DBQUERY" -eq "1" ]; then
             echo -e      
             crontab -l | grep -v '/auto-updater.sh'  | crontab -
             
+            echo -e "${GREEN}Removing paths from .profile on host ${CYAN}$HOST${GREEN}...${NC}"
+            echo -e
+            sed -i 'N;$!P;$!D;$d' ~/.profile
+            
             echo -e "${GREEN}Removing cloned elrond-go & elrond-configs repo from host ${CYAN}$HOST${GREEN}...${NC}"
             echo -e      
             if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi      
