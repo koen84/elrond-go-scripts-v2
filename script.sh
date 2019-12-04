@@ -264,9 +264,11 @@ if [ "$DBQUERY" -eq "1" ]; then
             echo -e      
             
             if ps -all | grep -q termui; then killall termui; sleep 2; fi
-            rm $CUSTOM_HOME/elrond-utils/termui
+            if [[ -e $CUSTOM_HOME/elrond-utils/termui ]]; then rm $CUSTOM_HOME/elrond-utils/termui; fi
+              
             if ps -all | grep -q logviewer; then killall logviewer; sleep 2; fi
-            rm $CUSTOM_HOME/elrond-utils/logviewer
+            if [[ -e $CUSTOM_HOME/elrond-utils/logviewer ]]; then rm $CUSTOM_HOME/elrond-utils/logviewer; fi
+            
             rm -rf $CUSTOM_HOME/elrond-utils && rm -rf $CUSTOM_HOME/elrond-nodes
             if [[ -e $CUSTOM_HOME/autoupdate.status ]]; then rm $CUSTOM_HOME/autoupdate.status; fi 
             
