@@ -34,13 +34,13 @@ if [ -z "$CURRENT" ]; then
 
                                               echo "Your current version is:  $CURRENT" >> $CUSTOM_HOME/autoupdate.status
                                               if [[ $CURRENT != *$LATEST* ]]; then
-                                                                                echo "Latest tag from github: $LATEST" >> $HOME/autoupdate.status
-                                                                                echo "Triggering automated upgrade !" >> $HOME/autoupdate.status
+                                                                                echo "Latest tag from github: $LATEST" >> $CUSTOM_HOME/autoupdate.status
+                                                                                echo "Triggering automated upgrade !" >> $CUSTOM_HOME/autoupdate.status
                                                                                 cd $SCRIPTPATH && bash script.sh auto_upgrade
                               
                                                                               else
-                                                                                echo "Latest tag from github: $LATEST" >> $HOME/autoupdate.status
-                                                                                echo "Nothing to do here... you are on the latest tag !" >> $HOME/autoupdate.status
+                                                                                echo "Latest tag from github: $LATEST" >> $CUSTOM_HOME/autoupdate.status
+                                                                                echo "Nothing to do here... you are on the latest tag !" >> $CUSTOM_HOME/autoupdate.status
                                                                               fi
               
                                           fi
