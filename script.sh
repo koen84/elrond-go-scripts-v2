@@ -267,6 +267,7 @@ if [ "$DBQUERY" -eq "1" ]; then
             rm $CUSTOM_HOME/elrond-utils/termui
             if ps -all | grep -q logviewer; then killall logviewer; sleep 2; fi
             rm $CUSTOM_HOME/elrond-utils/logviewer
+            rm -rf $CUSTOM_HOME/elrond-utils && rm -rf $CUSTOM_HOME/elrond-nodes && rm $CUSTOM_HOME/autoupdate.status 
             
             echo -e
             echo -e "${GREEN}Removing auto-updater crontab from host ${CYAN}$HOST${GREEN}...${NC}"
