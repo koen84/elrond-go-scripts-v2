@@ -1,37 +1,48 @@
 #!/bin/bash
 set -e
 
+#Get the script current running location
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+source $SCRIPTPATH/config/variables.cfg
+
 #Handle some paths
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
+#See current running version
+CURRENT=$(curl -s http://localhost:8080/node/status | jq -r .details.erd_app_version)
+
+#See current available version
 LATEST=$(curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
-if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; 
-                  then 
-                    cd $GOPATH/src/github.com/ElrondNetwork/elrond-go/
-                    CLONEDTAG=$(git describe --exact-match --tags $(git log -n1 --pretty='%h'))
-          else
-            echo "--> elrond-go repo not found in path..." >> $HOME/autoupdate.status
-    fi
+echo " " >> $CUSTOM_HOME/autoupdate.status
+echo `date` >> $CUSTOM_HOME/autoupdate.status
 
-echo " " >> $HOME/autoupdate.status
-echo `date` >> $HOME/autoupdate.status
-echo "Your current tag is:  $CLONEDTAG" >> $HOME/autoupdate.status
+if [ -z "$CURRENT" ]; then
+                        echo "Could not get latest current version !!! Node(s) not running ! Aborting..." >> $CUSTOM_HOME/autoupdate.status
+                        echo " " >> $CUSTOM_HOME/autoupdate.status
+    
+                      else
+                         
+                        if [ -z "$LATEST" ]; then
+                                              echo "Couldn't get the latest tag from Github !!! Aborting..." >> $CUSTOM_HOME/autoupdate.status
+                                              echo " " >> $CUSTOM_HOME/autoupdate.status
+                                            
+                                            else 
 
-
-if [ -z "$LATEST" ]; then
-                      echo "Couldn't get the latest tag from Github !!! Aborting..." >> $HOME/autoupdate.status
-                      echo " " >> $HOME/autoupdate.status
-                        else 
-              if [ "$CLONEDTAG" != "$LATEST" ]; then
-                            echo "Latest tag on github: $LATEST" >> $HOME/autoupdate.status
-                            echo "Triggering automated upgrade !" >> $HOME/autoupdate.status
-                            cd $HOME/elrond-go-scripts-v2/ && bash script.sh auto_upgrade
+                                              echo "Your current version is:  $CURRENT" >> $CUSTOM_HOME/autoupdate.status
+                                              if [[ $CURRENT != *$LATEST* ]]; then
+                                                                                echo "Latest tag from github: $LATEST" >> $CUSTOM_HOME/autoupdate.status
+                                                                                echo "Triggering automated upgrade !" >> $CUSTOM_HOME/autoupdate.status
+                                                                                cd $SCRIPTPATH && bash script.sh auto_upgrade
                               
-                              else
-                                echo "Latest tag on github: $LATEST" >> $HOME/autoupdate.status
-                                echo "Nothing to do here... you are on the latest tag !" >> $HOME/autoupdate.status
-                              fi
-    fi
+                                                                              else
+                                                                                echo "Latest tag from github: $LATEST" >> $CUSTOM_HOME/autoupdate.status
+                                                                                echo "Nothing to do here... you are on the latest tag !" >> $CUSTOM_HOME/autoupdate.status
+                                                                              fi
+              
+                                          fi
+
+  fi
