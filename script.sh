@@ -355,6 +355,7 @@ if [ "$DBQUERY" -eq "1" ]; then
   
 'sudofix')
         install_sudofix1
+
         INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)
         for i in $(seq 1 $INSTALLEDNODES);
                 do
@@ -362,7 +363,7 @@ if [ "$DBQUERY" -eq "1" ]; then
                         install_sudofix
                 done
         ;;
-        
+
 *)
   echo "Usage: Missing parameter ! [install|install-remote|upgrade|upgrade-remote|start|start-remote|stop|stop-remote|cleanup|cleanup-remote]"
   ;;
