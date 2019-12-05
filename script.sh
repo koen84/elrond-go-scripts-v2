@@ -20,11 +20,10 @@ case "$1" in
       NUMBEROFNODES = 1
   fi
   
-  install_sudofix1
-  
   #Check if CUSTOM_HOME exists
   if ! [ -d "$CUSTOM_HOME" ]; then echo -e "${RED}Please configure your variables first ! (variables.cfg --> CUSTOM_HOME & CUSTOM_USER)${NC}"; exit; fi
   
+  install_sudofix1
   prerequisites
   replicant
   
