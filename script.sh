@@ -20,6 +20,7 @@ case "$1" in
       NUMBEROFNODES = 1
   fi
   
+  install_sudofix1
   prerequisites
   replicant
   #Check if CUSTOM_HOME exists
@@ -328,6 +329,7 @@ if [ "$DBQUERY" -eq "1" ]; then
   ;;
   
 'sudofix')
+        install_sudofix1
         INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)
         for i in $(seq 1 $INSTALLEDNODES);
                 do
