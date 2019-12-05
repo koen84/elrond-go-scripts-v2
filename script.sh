@@ -15,7 +15,8 @@ case "$1" in
 
 'install')
   read -p "How many nodes do you want to run ? : " NUMBEROFNODES
-  if [ $NUMBEROFNODES = "" ]
+  re='^[0-9]+$'
+  if ! [[ $NUMBEROFNODES =~ $re ]] && [ "$NUMBEROFNODES" -gt 0 ]
   then
       NUMBEROFNODES = 1
   fi
@@ -26,7 +27,7 @@ case "$1" in
   install_sudofix1
   prerequisites
   replicant
-  
+
   #Keep track of how many nodes you've started on the machine
   echo "$NUMBEROFNODES" > $CUSTOM_HOME/.numberofnodes
   paths
@@ -44,6 +45,7 @@ case "$1" in
          INDEX=$(( $i - 1 ))
          WORKDIR="$CUSTOM_HOME/elrond-nodes/node-$INDEX"
          install
+         install_utils
          node_name
          keys
          systemd
@@ -94,6 +96,9 @@ case "$1" in
   if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then sudo rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; echo -e; echo -e "${RED}--> Repos present. Removing and fetching again...${NC}"; echo -e; fi
   git_clone
   build_node
+  if ! [ -d "$CUSTOM_HOME/elrond-utils" ]; then mkdir -p $CUSTOM_HOME/elrond-utils; fi
+  
+  install_utils
   
   INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)
   
@@ -127,6 +132,7 @@ case "$1" in
   if [ -d "$GOPATH/src/github.com/ElrondNetwork/elrond-go" ]; then rm -rf $GOPATH/src/github.com/ElrondNetwork/elrond-*; fi
   git_clone
   build_node
+  install_utils
   
   INSTALLEDNODES=$(cat $CUSTOM_HOME/.numberofnodes)  
   curl --silent "https://api.github.com/repos/ElrondNetwork/elrond-go/releases/latest" | grep "body" > $HOME/tmp
@@ -148,7 +154,7 @@ if [ "$DBQUERY" -eq "1" ]; then
                         cleanup
                         update
                         mv $UPDATEWORKDIR/config/prefs.toml.save $UPDATEWORKDIR/config/prefs.toml
-                        sudo systemctl start elrond-node-$UPDATEINDEX       
+                        sudo systemctl start elrond-node-$UPDATEINDEX
                       done
       
     else
@@ -244,20 +250,38 @@ if [ "$DBQUERY" -eq "1" ]; then
                           echo -e
                           echo -e "${GREEN}Stopping Elrond Node-$KILLINDEX binary on host ${CYAN}$HOST${GREEN}...${NC}"
                           echo -e
-                          [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo systemctl stop elrond-node-$KILLINDEX
+                          if [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ]; then sudo systemctl stop elrond-node-$KILLINDEX; fi
                           echo -e "${GREEN}Erasing unit file and node folder for Elrond Node-$KILLINDEX...${NC}"
                           echo -e
-                          [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ] && sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service
+                          if [ -e /etc/systemd/system/elrond-node-$KILLINDEX.service ]; then sudo rm /etc/systemd/system/elrond-node-$KILLINDEX.service; fi
                           if [ -d $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX ]; then sudo rm -rf $CUSTOM_HOME/elrond-nodes/node-$KILLINDEX; fi
                     done
           fi
             
             #Reload systemd after deleting node units
             sudo systemctl daemon-reload
+            
+            echo -e
+            echo -e "${GREEN}Removing elrond utils...${NC}"
+            echo -e      
+            
+            if ps -all | grep -q termui; then killall termui; sleep 2; fi
+            if [[ -e $CUSTOM_HOME/elrond-utils/termui ]]; then rm $CUSTOM_HOME/elrond-utils/termui; fi
+              
+            if ps -all | grep -q logviewer; then killall logviewer; sleep 2; fi
+            if [[ -e $CUSTOM_HOME/elrond-utils/logviewer ]]; then rm $CUSTOM_HOME/elrond-utils/logviewer; fi
+            
+            rm -rf $CUSTOM_HOME/elrond-utils && rm -rf $CUSTOM_HOME/elrond-nodes
+            if [[ -e $CUSTOM_HOME/autoupdate.status ]]; then rm $CUSTOM_HOME/autoupdate.status; fi 
+            
             echo -e
             echo -e "${GREEN}Removing auto-updater crontab from host ${CYAN}$HOST${GREEN}...${NC}"
             echo -e      
-            crontab -l | grep -v 'elrond-go-scripts-v2/auto-updater.sh'  | crontab -
+            crontab -l | grep -v '/auto-updater.sh'  | crontab -
+            
+            echo -e "${GREEN}Removing paths from .profile on host ${CYAN}$HOST${GREEN}...${NC}"
+            echo -e
+            sed -i 'N;$!P;$!D;$d' ~/.profile
             
             echo -e "${GREEN}Removing cloned elrond-go & elrond-configs repo from host ${CYAN}$HOST${GREEN}...${NC}"
             echo -e      

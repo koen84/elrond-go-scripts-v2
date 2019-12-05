@@ -10,7 +10,7 @@ Each node will run in background as a separate systemd unit.
 ## REQUIREMENTS
 
 - Running Ubuntu 18.04 & up
-- Running the script requires sudo priviledges.
+- Running the script requires sudo priviledges (without password).
 - Remote machines should be accesible via SSH using key pairs.
 
 ## SCRIPT SETTINGS - MUST BE MODIFIED BEFORE FIRST RUN
@@ -22,16 +22,17 @@ Each node will run in background as a separate systemd unit.
 ## KEY MANAGEMENT
 
 Each machine must have its own key set(s) copied locally. 
-For running only one node per machine, the 2 keys (initialBalancesSk.pem and initialNodesSk.pem) should be placed in a zip file named 'node-0.zip', in the path previously specified in variables.cfg file (NODE_KEYS_LOCATION)
+For running only one node per machine, the 2 keys (initialBalancesSk.pem and initialNodesSk.pem) should be placed in a zip file named 'node-0.zip', in the path previously specified in variables.cfg file (NODE_KEYS_LOCATION). 
+Note: "$NODE_KEYS_LOCATION" is created from "$CUSTOM_HOME" and the folder "VALIDATOR_KEYS" by default. 
 For running additional nodes on the same machine, simply create additional zip files incrementing the numeric value (i.e. for second node: 'node-1.zip', for third node: 'node-2.zip', etc..), containing the additional key sets.
 
 File structure example:
 
-	$HOME/VALIDATOR_KEYS/node-0.zip
-	$HOME/VALIDATOR_KEYS/node-1.zip
-	$HOME/VALIDATOR_KEYS/node-2.zip
+	$CUSTOM_HOME/VALIDATOR_KEYS/node-0.zip
+	$CUSTOM_HOME/VALIDATOR_KEYS/node-1.zip
+	$CUSTOM_HOME/VALIDATOR_KEYS/node-2.zip
 	...
-	$HOME/VALIDATOR_KEYS/node-x.zip
+	$CUSTOM_HOME/VALIDATOR_KEYS/node-x.zip
 	
 
 If no key sets are found in the specified location, the script will generate new keys and the node(s) will run as Observer(s).
@@ -39,7 +40,7 @@ If no key sets are found in the specified location, the script will generate new
 Example of adding your validator keys to a zip file (node-0.zip):
 1. Navigate to your current node install path and go into the /config folder
 2. Issue the command to create your zip archive: `zip node-0.zip *.pem` (repeat for each node on that machine incrementing the value 0,1,2...x)
-3. Move the zip archive to the `$HOME/VALIDATOR_KEYS` folder: `mv node-0.zip $HOME/VALIDATOR_KEYS/` (repeat for all nodes on that machine)
+3. Move the zip archive to the `$CUSTOM_HOME/VALIDATOR_KEYS` folder: `mv node-0.zip $CUSTOM_HOME/VALIDATOR_KEYS/` (repeat for all nodes on that machine)
 
 ## RUNNING THE SCRIPT
 
